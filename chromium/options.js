@@ -21,4 +21,24 @@ function constructOptions(kButtonColors) {
   }
 }
 
+function constructBlacklist() {
+  let xhr = new XMLHttpRequest();
+
+  xhr.open("GET", "blacklist.json", true); // TODO: retreive blacklist from a server
+  xhr.onreadystatechange = function() {
+    if (xhr.readyState == 4) {
+      let blacklist = JSON.parse(xhr.responseText);
+      let blacklistDiv = document.getElementById('blacklistDiv');
+
+      for (let i in blacklist.users) {
+        blacklistDiv.innerHTML += blacklist.users[i] + "<br>";
+      }
+    }
+  }
+
+  xhr.send();
+}
+
 constructOptions(kButtonColors);
+constructBlacklist()
+
