@@ -12,7 +12,38 @@ changeColor.onclick = function(element) {
   chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
     chrome.tabs.executeScript(
         tabs[0].id,
-        {code: 'document.body.style.backgroundColor = "' + color + '";'});
+        {
+          code: "                                                   \
+          function removeAllEventListenersFromElement(element) {    \
+            let clone = element.cloneNode();                        \
+                                                                    \
+             while (element.firstChild) {                           \
+               clone.appendChild(element.lastChild);                \
+           }                                                        \
+                                                                    \
+           element.parentNode.replaceChild(clone, element);         \
+         }                                                          \
+                                                                    \
+         function disableButton(buttonElement) {                    \
+           buttonElement.setAttribute('disabled', '');              \
+           buttonElement.style = 'color:yellow';                    \
+           buttonElement.innerHTML = 'Seller is blacklisted';       \
+                                                                    \
+           removeAllEventListenersFromElement(buttonElement);       \
+         }                                                          \
+                                                                    \
+         var buyButton = document.getElementById('binBtn_btn');     \
+         var cartButton = document.getElementById('isCartBtn_btn'); \
+         var barterButton = document.getElementById('boBtn_btn');   \
+                                                                    \
+         disableButton(buyButton);                                  \
+         disableButton(cartButton);                                 \
+         disableButton(barterButton);                               \
+                                                                    \
+         var sellerName = document.getElementById('mbgLink');       \
+         sellerName.style = 'color:red !important';                 \
+         "
+       });
   });
 };
 
