@@ -27,7 +27,7 @@ changeColor.onclick = function(element) {
            let blacklist = JSON.parse(                                \
              '                                                        \
              {                                                        \
-             \"users\":                                              \
+             \"users\":                                               \
                [                                                      \
                  \"welovebasic_de\"                                   \
                ]                                                      \
@@ -55,8 +55,6 @@ changeColor.onclick = function(element) {
            return false;                                              \
          }                                                            \
                                                                       \
-         var sellerName = document.getElementById('mbgLink').getElementsByTagName('span')[0].innerHTML; \
-                                                                      \
          function disableButton(buttonElement) {                      \
            buttonElement.setAttribute('disabled', '');                \
            buttonElement.style = 'color:yellow';                      \
@@ -65,8 +63,10 @@ changeColor.onclick = function(element) {
            removeAllEventListenersFromElement(buttonElement);         \
          }                                                            \
                                                                       \
-         if (userIsBlacklisted(sellerName)) {                         \
-           sellerName.style = 'color:red !important';                 \
+         var sellerNameElem = document.getElementById('mbgLink').getElementsByTagName('span')[0]; \
+                                                                      \
+         if (userIsBlacklisted(sellerNameElem.innerHTML)) {           \
+           sellerNameElem.style = 'color:red !important';             \
                                                                       \
            var buyButton = document.getElementById('binBtn_btn');     \
            var cartButton = document.getElementById('isCartBtn_btn'); \
