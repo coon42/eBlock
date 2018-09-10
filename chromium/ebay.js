@@ -8,7 +8,11 @@ function removeAllEventListenersFromElement(element) {
 }
 
 function getBlacklist() {
-  let blacklist = JSON.parse('{"users": ["welovebasic_de"]}');
+  let blacklist = {};
+  let users = [];
+
+  blacklist.users = users;
+  blacklist.users.push("welovebasic_de");
 
   return blacklist;
 }
