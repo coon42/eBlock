@@ -1,18 +1,12 @@
-function removeAllEventListenersFromElement(element) {
-  let clone = element.cloneNode();
-
-  while (element.firstChild)
-    clone.appendChild(element.lastChild);
-
-  element.parentNode.replaceChild(clone, element);
-}
-
 function getBlacklist() {
-  let blacklist = {};
-  let users = [];
+  // TODO: get blacklist from local storage or database:
 
+  let blacklist = {};
+  let users = {};
   blacklist.users = users;
-  blacklist.users.push("welovebasic_de");
+
+  let reason = "bad shipping";
+  users["welovebasic_de"] = reason;
 
   return blacklist;
 }
@@ -20,41 +14,33 @@ function getBlacklist() {
 function userIsBlacklisted(userName) {
   let blacklist = getBlacklist();
 
-  console.log('blacklist: ');
-  console.log(blacklist);
-
-  for (let i in blacklist.users) {
-    console.log(blacklist.users[i]);
-    console.log(userName);
-
-    if (blacklist.users[i] == userName)
-      return true;
-  }
-
-  return false;
+  return blacklist.users[userName] != null;
 }
-
-var sellerName = document.getElementById('mbgLink').getElementsByTagName('span')[0].innerHTML;
-
-console.log('detected seller: ');
-console.log(sellerName.innerHTML);
 
 function disableButton(buttonElement) {
+  if(buttonElement == null)
+    return;
+
   buttonElement.setAttribute('disabled', '');
-  buttonElement.style = 'color:yellow';
-  buttonElement.innerHTML = 'Seller is blacklisted';
-
-  removeAllEventListenersFromElement(buttonElement);
+  buttonElement.style = 'pointer-events: none;'
 }
 
-if (userIsBlacklisted(sellerName)) {
-  sellerName.style = 'color:red !important';
+var sellerElement = document.getElementById('mbgLink');
 
-  var buyButton = document.getElementById('binBtn_btn');
-  var cartButton = document.getElementById('isCartBtn_btn');
-  var barterButton = document.getElementById('boBtn_btn');
+if(sellerElement != null) {
+  let sellerName = sellerElement.getElementsByTagName('span')[0].innerHTML;
+  console.log('Detected seller: "%s". Blacklisted: %s', sellerName, userIsBlacklisted(sellerName) ? "Yes" : "No");
 
-  disableButton(buyButton);
-  disableButton(cartButton);
-  disableButton(barterButton);
+  if (userIsBlacklisted(sellerName)) {
+    sellerName.style = 'color:red !important';
+
+    let buyButton = document.getElementById('binBtn_btn');
+    let cartButton = document.getElementById('isCartBtn_btn');
+    let barterButton = document.getElementById('boBtn_btn');
+
+    disableButton(buyButton);
+    disableButton(cartButton);
+    disableButton(barterButton);
+  }
 }
+
